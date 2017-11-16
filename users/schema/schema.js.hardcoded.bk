@@ -1,0 +1,50 @@
+const graphql = require('graphql');
+const _ = require('lodash');
+
+const {
+	GraphQLObjectType,
+	GraphQLString,
+	GraphQLInt,
+	GraphQLSchema	// Takes in a Root Query and returns a GraphQLSchema Instance
+} = graphql;
+
+// Just hard coding for this example
+const users = [
+	{ id: '23', firstName: 'Bill', age: 20 },
+	{ id: '30', firstName: 'Jane', age: 24 }
+];
+
+// Using GraphQLObjectType about the pressence of "user" in our application
+// Instruct GraphQL to instruct GraphQL about our 'user'
+const UserType = new GraphQLObjectType({
+  name: 'User',
+  fields: () => ({
+    id: { type: GraphQLString },
+    firstName: { type: GraphQLString },
+    age: { type: GraphQLInt },
+  })
+});
+
+// Our "Root Query"
+// The purpose of the “Root Query” is to 
+// allow GraphQL to jump and land on a very specific node on the graph of our data.
+// Here, we are saying "give me an id, and I will give you a user".
+// The "resolve" function in our root Query actually goes into our DB and finds the
+// actual data we're looking for. It actually reaches out and grabs the data.
+const RootQuery = new GraphQLObjectType({
+	name: 'RootQueryType',
+	fields: {
+		user: {
+			type: UserType,
+			args: { id: { type: GraphQLString } },
+			resolve(parentValue, args) {	// The passed id will be present within the "args"
+				return _.find(users, { id: args.id });	// Working with hard-coded data. Here we return a raw js object.
+			}
+		}
+	}
+});
+
+// Export the schema to make available to other parts of our app
+module.exports = new GraphQLSchema({
+	query: RootQuery
+});

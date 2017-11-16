@@ -1,0 +1,11 @@
+{
+	"users": [
+		{ "id": "23", "firstName": "Bill", "age": 20, "companyId": "1" },
+		{ "id": "30", "firstName": "Jane", "age": 24, "companyId": "2" },
+		{ "id": "45", "firstName": "Greg", "age": 40, "companyId": "2" }
+	],
+	"companies": [
+		{ "id": "1", "name": "Pacorazzi Photography", "description": "photography" },
+		{ "id": "2", "name": "XYZ Photography", "description": "photography by XYZ" }
+	]
+}
